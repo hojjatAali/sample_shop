@@ -42,8 +42,12 @@ class PlatformProvider extends OrchidServiceProvider
             ,
 
             Menu::make('invoices')
+                ->icon('texts')
+                ->route('invoice.list')
+                ,
+            Menu::make('add invoice')
                 ->icon('text')
-                ->route('platform.example')
+                ->route('invoice.create')
                 ,
 
             Menu::make(__('Users'))

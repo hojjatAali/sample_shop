@@ -127,6 +127,6 @@ class ProductEditScreen extends Screen
         $product=Product::find($product_id);
         $product->fill($request->get('product'))->save();
 
-        return route('products.list');
+        return redirect()-> route('products.list');
     }
 }

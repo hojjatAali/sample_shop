@@ -13,6 +13,21 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger ('total_price');
+            $table->bigInteger ('price_after_discount');
+            $table->integer  ('discount')->nullable ();
+            $table->bigInteger   ('shipping_cost')->nullable ();
+            $table->string ('seller_name');
+            $table->string ('customer_name');
+            $table->string ('driver_name')->nullable ();
+            $table->longText ('description')->nullable ();
+            $table->longText ('address');
+            $table->string ('recipient');
+            $table->enum ("status",["in_progress","delivered","canceled","confirmation"])->default ("confirmation");
+            $table->dateTime  ('delivered_at')->nullable ();
+            $table->dateTime ('canceled_at')->nullable ();
+            $table->dateTime ('payment_date')->nullable ();
+            $table->date ('pay_deadline')->nullable ();
             $table->timestamps();
         });
     }
