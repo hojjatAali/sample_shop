@@ -2,7 +2,14 @@
 
 namespace App\Orchid\Screens;
 
+use App\Models\Product;
+use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Actions\Menu;
+use Orchid\Screen\Actions\ModalToggle;
+use Orchid\Screen\Fields\Select;
+use Orchid\Screen\Layouts\Modal;
 use Orchid\Screen\Screen;
+use Orchid\Support\Facades\Layout;
 
 class InvoiceScreen extends Screen
 {
@@ -23,7 +30,7 @@ class InvoiceScreen extends Screen
      */
     public function name(): ?string
     {
-        return 'InvoiceScreen';
+        return 'Invoices';
     }
 
     /**
@@ -33,7 +40,11 @@ class InvoiceScreen extends Screen
      */
     public function commandBar(): iterable
     {
-        return [];
+        return [
+            Menu::make('Add')
+                ->route('invoice.create')
+                ->icon('plus'),
+        ];
     }
 
     /**
@@ -43,6 +54,9 @@ class InvoiceScreen extends Screen
      */
     public function layout(): iterable
     {
-        return [];
+        return [
+
+
+        ];
     }
 }

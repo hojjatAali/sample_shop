@@ -79,7 +79,7 @@ class ProductScreen extends Screen
                 TD::make(__('Actions'))
                     ->align(TD::ALIGN_CENTER)
                     ->width('100px')
-                    ->render(fn (Product $product) => DropDown::make()
+                    ->render(fn(Product $product) => DropDown::make()
                         ->icon('bs.three-dots-vertical')
                         ->list([
                             Link::make(__('Edit'))
@@ -87,11 +87,9 @@ class ProductScreen extends Screen
                                 ->icon('bs.pencil'),
                             Button::make('delete')
                                 ->confirm('are you want to delete product ???')
-                            ->icon('trash')
-                            ->method('delete', ['product' => $product->id])
+                                ->icon('trash')
+                                ->method('delete', ['product' => $product->id])
                         ])),
-
-
 
 
             ]),
@@ -136,6 +134,7 @@ class ProductScreen extends Screen
                         "box" => "box"
                     ])
                     ->empty('carton')
+                    ->value('carton')
             ]))
                 ->title('Create Product')
                 ->applyButton('Add Product'),
@@ -172,12 +171,10 @@ class ProductScreen extends Screen
             "selling_price" => $request->input('product.selling_price'),
             "customer_price" => $request->input('product.customer_price'),
             "quantity_in_box" => $request->input('product.quantity_in_box'),
-            "package_type"=>$request->input('product.package_type')
+            "package_type" => $request->input('product.package_type')
         ]);
-        return [
-            Alert::message('new product created')
-            ,redirect()->route('products.list')
-        ];
+        Alert::message('new product created');
+        return redirect()->route('products.list');
 
     }
 

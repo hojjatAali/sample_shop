@@ -11,6 +11,9 @@ use App\Orchid\Screens\Examples\ExampleGridScreen;
 use App\Orchid\Screens\Examples\ExampleLayoutsScreen;
 use App\Orchid\Screens\Examples\ExampleScreen;
 use App\Orchid\Screens\Examples\ExampleTextEditorsScreen;
+use App\Orchid\Screens\InvoiceCreateScreen;
+use App\Orchid\Screens\InvoiceEditScreen;
+use App\Orchid\Screens\InvoiceScreen;
 use App\Orchid\Screens\PlatformScreen;
 use App\Orchid\Screens\ProductEditScreen;
 use App\Orchid\Screens\ProductScreen;
@@ -112,5 +115,7 @@ Route::screen('/examples/charts', ExampleChartsScreen::class)->name('platform.ex
 Route::screen('/examples/cards', ExampleCardsScreen::class)->name('platform.example.cards');
 Route::screen('/product', ProductScreen::class)->name('products.list');
 Route::screen('/product/{product_id?}', ProductEditScreen::class)->name('product.edit');
-
+Route::screen('/invoice', InvoiceScreen::class)->name('invoice.list');
+Route::screen('/invoice/create',InvoiceCreateScreen::class)->name('invoice.create');
+Route::screen('/invoice/{invoice_id?}', InvoiceEditScreen::class)->name('invoice.edit');
 //Route::screen('idea', Idea::class, 'platform.screens.idea');
