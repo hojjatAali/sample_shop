@@ -2,10 +2,12 @@
 
 namespace App\Orchid\Screens\Examples;
 
+use App\Models\Product;
 use App\Orchid\Layouts\Examples\ChartBarExample;
 use App\Orchid\Layouts\Examples\ChartLineExample;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Orchid\Alert\Alert;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\ModalToggle;
 use Orchid\Screen\Components\Cells\Currency;
@@ -172,4 +174,6 @@ class ExampleScreen extends Screen
     {
         Toast::warning($request->get('toast', 'Hello, world! This is a toast message.'));
     }
+
+
 }
