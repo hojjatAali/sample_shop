@@ -96,9 +96,11 @@ class ProductScreen extends Screen
             Layout::modal('productModal', Layout::rows([
                 Input::make('product.product_name')
                     ->title('product_name')
+                    ->required()
                     ->placeholder('Enter product name')
                     ->help('The name of the product to be created.'),
                 Input::make('product.barcode')
+                    ->required()
                     ->title('barcode'),
                 Input::make('product.expire_date')
                     ->type('date')
@@ -109,19 +111,24 @@ class ProductScreen extends Screen
                 Input::make('product.max_in_card')
                     ->title('Max In Card')
                     ->type('number')
+                    ->required()
                     ->value(100),
                 Input::make('product.purchase_price')
                     ->title('purchase_price')
+                    ->required()
                     ->type('number'),
                 Input::make('product.selling_price')
                     ->title('selling_price')
-                    ->type('number'),
+                    ->type('number')
+                    ->required(),
                 Input::make('product.customer_price')
                     ->title('customer_price')
-                    ->type('number'),
+                    ->type('number')
+                    ->required(),
                 Input::make('product.quantity_in_box')
                     ->title('quantity_in_box_price')
-                    ->type('number'),
+                    ->type('number')
+                    ->required(),
                 CheckBox::make('product.is_active')
                     ->title('is_active')
                     ->value(1),
@@ -144,8 +151,8 @@ class ProductScreen extends Screen
     public function create(Request $request)
     {
         $request->validate([
-            "product.product_name" => ["required", "max:30"],
-            "product.barcode" => ["required", "max:50"],
+            "product.product_name" => ["required", "max:30","unique:products,product_name"],
+            "product.barcode" => ["required", "max:50","unique:products,barcode"],
             "product.expire_date" => ["nullable"],
             "product.produce_date" => ["nullable"],
             "product.max_in_card" => ["required"],
@@ -181,9 +188,10 @@ class ProductScreen extends Screen
     public function delete(Product $product)
     {
         $product->delete();
-        return [
-            Alert::warning('deleted successfully')
-        ];
+
+            Alert::warning('deleted successfully');
+            return redirect()->route('products.list');
+
     }
 
 

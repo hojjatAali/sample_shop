@@ -5,6 +5,7 @@
 /public/storage
 /storage/*.key
 /vendor
+/app/Orchid/Layouts/Examples
 .env
 .env.backup
 .env.production
