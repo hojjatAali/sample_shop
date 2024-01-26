@@ -187,6 +187,7 @@ class ProductScreen extends Screen
 
     public function delete(Product $product)
     {
+
         $product->delete();
 
             Alert::warning('deleted successfully');
