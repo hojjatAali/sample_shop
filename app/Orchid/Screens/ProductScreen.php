@@ -90,8 +90,6 @@ class ProductScreen extends Screen
                                 ->icon('trash')
                                 ->method('delete', ['product' => $product->id])
                         ])),
-
-
             ]),
             Layout::modal('productModal', Layout::rows([
                 Input::make('product.product_name')
@@ -151,8 +149,8 @@ class ProductScreen extends Screen
     public function create(Request $request)
     {
         $request->validate([
-            "product.product_name" => ["required", "max:30","unique:products,product_name"],
-            "product.barcode" => ["required", "max:50","unique:products,barcode"],
+            "product.product_name" => ["required", "max:30", "unique:products,product_name"],
+            "product.barcode" => ["required", "max:50", "unique:products,barcode"],
             "product.expire_date" => ["nullable"],
             "product.produce_date" => ["nullable"],
             "product.max_in_card" => ["required"],
@@ -187,13 +185,8 @@ class ProductScreen extends Screen
 
     public function delete(Product $product)
     {
-
         $product->delete();
-
-            Alert::warning('deleted successfully');
-            return redirect()->route('products.list');
-
+        Alert::warning('deleted successfully');
+        return redirect()->route('products.list');
     }
-
-
 }

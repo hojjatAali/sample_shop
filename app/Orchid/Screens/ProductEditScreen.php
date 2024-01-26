@@ -72,12 +72,12 @@ class ProductEditScreen extends Screen
                     ->value($this->product->product_name)
                     ->type('text'),
                 Input::make('product.barcode')
-                ->title('Barcode')
-                ->value($this->product->barcode)
-                ->type('number'),
+                    ->title('Barcode')
+                    ->value($this->product->barcode)
+                    ->type('number'),
                 CheckBox::make('product.is_active')
                     ->title('Active?')
-                ->value($this->product->is_active),
+                    ->value($this->product->is_active),
                 Input::make('product.expire_date')
                     ->title('EX date')
                     ->value($this->product->expire_date)
@@ -108,25 +108,24 @@ class ProductEditScreen extends Screen
                     ->type('number'),
                 RadioButtons::make('product.package_type')
                     ->title('Package Type')
-                ->options([
-                    "sack" => "sack",
-                    "package" => "package",
-                    "carton" => "carton",
-                    "box" => "box"
-                ])
-                ->value($this->product->package_type),
+                    ->options([
+                        "sack" => "sack",
+                        "package" => "package",
+                        "carton" => "carton",
+                        "box" => "box"
+                    ])
+                    ->value($this->product->package_type),
                 Button::make('save')
-                ->method('update',["product_id"=>$this->product->id])
+                    ->method('update', ["product_id" => $this->product->id])
 
             ])
         ];
     }
-
-    public function update(Request $request ,$product_id)
+    public function update(Request $request, $product_id)
     {
-        $product=Product::find($product_id);
+        $product = Product::find($product_id);
         $product->fill($request->get('product'))->save();
 
-        return redirect()-> route('products.list');
+        return redirect()->route('products.list');
     }
 }

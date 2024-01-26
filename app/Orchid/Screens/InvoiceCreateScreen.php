@@ -36,7 +36,6 @@ class InvoiceCreateScreen extends Screen
      */
     public function query(): iterable
     {
-
         $user = Auth::user();
         $this->products = Product::all();
         if ($user->cart) {
@@ -88,7 +87,7 @@ class InvoiceCreateScreen extends Screen
                     Layout::rows([
                         Input::make('invoice.seller_name')
                             ->title('Seller Name')
-                        ->required(),
+                            ->required(),
                         Input::make('invoice.customer_name')
                             ->title('Costumer Name')
                             ->required(),
@@ -164,7 +163,6 @@ class InvoiceCreateScreen extends Screen
             ])
         ];
     }
-
     public function addToCart(Request $request)
     {
         $user = Auth::user();
@@ -179,26 +177,18 @@ class InvoiceCreateScreen extends Screen
             $user->cart->products()->attach($product_id, ['quantity' => $quantity, 'price_of_product' => $price_of_product]);
 
         }
-
-
     }
-
     public function removeFromCart(Product $product)
     {
-
         $user = Auth::user();
         $user->cart->products()->detach($product->id);
-
     }
-
     public function incrementProduct(Product $product)
     {
         $user = Auth::user();
         $price_of_product = $product->selling_price;
         $user->cart->products()->updateExistingPivot($product, ['quantity' => DB::raw('quantity + 1'), 'price_of_product' => DB::raw('price_of_product +' . $price_of_product)]);
-
     }
-
     public function decrementProduct(Product $product)
     {
         $user = Auth::user();
@@ -211,10 +201,9 @@ class InvoiceCreateScreen extends Screen
         }
     }
 
-
     public function createInvoice(Request $request)
     {
-        if (!Auth::user()->cart->product){
+        if (!Auth::user()->cart->product) {
             Alert::message('no products for invoice ');
             return redirect()->route('invoice.create');
         }

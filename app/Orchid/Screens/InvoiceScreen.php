@@ -81,14 +81,12 @@ class InvoiceScreen extends Screen
                                 ->icon('trash')
                                 ->method('delete', ['invoice_id' => $invoice->id])
                         ])),
-
             ])
         ];
     }
-
-    public function delete( $invoice_id)
+    public function delete($invoice_id)
     {
-        $invoice=Invoice::find($invoice_id);
+        $invoice = Invoice::find($invoice_id);
         $invoice->delete();
 
         return redirect()->route('invoice.list');
