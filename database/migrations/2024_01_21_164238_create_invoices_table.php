@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->bigInteger ('total_price');
-            $table->bigInteger ('price_after_discount');
-            $table->integer  ('discount')->nullable ();
-            $table->bigInteger   ('shipping_cost')->nullable ();
             $table->string ('seller_name');
+            $table->integer  ('discount')->nullable ();
+            $table->bigInteger ('price_after_discount');
+            $table->bigInteger   ('shipping_cost')->nullable ();
             $table->string ('customer_name');
             $table->string ('driver_name')->nullable ();
             $table->longText ('description')->nullable ();

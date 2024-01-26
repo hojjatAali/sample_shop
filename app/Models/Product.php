@@ -32,4 +32,9 @@ class Product extends Model
     {
         return $this->barcode .'_ '.$this->product_name;
     }
+
+    public function carts()
+    {
+        return $this->belongsToMany(Cart::class)->withPivot('quantity', 'price_of_product');
+    }
 }
