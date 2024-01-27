@@ -202,12 +202,19 @@ class InvoiceCreateScreen extends Screen
 
     public function createInvoice(Request $request)
     {
-        if (!Auth::user()->cart->product) {
+        $cart = Auth::user()->cart;
+        $total_price = DB::table('cart_product')->where('cart_id', $cart->id)->sum('price_of_product') + $request->input('invoice.shipping_cost');
+        if (!$total_price) {
             Alert::message('no products for invoice ');
             return redirect()->route('invoice.create');
         }
-        $cart = Auth::user()->cart;
-        $total_price = DB::table('cart_product')->where('cart_id', $cart->id)->sum('price_of_product') + $request->input('invoice.shipping_cost');
+        $request->validate([
+           "invoice.seller_name"=>['required'],
+           "invoice.customer_name"=>['required'],
+           "invoice.driver_name"=>['required'],
+           "invoice.address"=>['required'],
+           "invoice.recipient"=>['required'],
+        ]);
         $invoice = new Invoice();
         $invoice->user_id = $cart->user_id;
         $invoice->seller_name = $request->input('invoice.seller_name');
