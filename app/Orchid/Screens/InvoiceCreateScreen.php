@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use League\CommonMark\Extension\Table\TableRow;
 use Orchid\Screen\Actions\DropDown;
 use Orchid\Screen\Actions\Link;
+use Orchid\Screen\Actions\ModalToggle;
 use Orchid\Screen\TD;
 use Orchid\Support\Color;
 use Illuminate\Http\Request;
@@ -82,44 +83,7 @@ class InvoiceCreateScreen extends Screen
     public function layout(): iterable
     {
         return [
-            Layout::accordion([
-                "General Information" => [
-                    Layout::rows([
-                        Input::make('invoice.seller_name')
-                            ->title('Seller Name')
-                        , Input::make('invoice.customer_name')
-                            ->title('Costumer Name')
-                        , Input::make('invoice.driver_name')
-                            ->title('Driver Name'),
-                        Input::make('invoice.description')
-                            ->title('Description'),
-                        Input::make('invoice.address')
-                            ->title('Address')
-                        , Input::make('invoice.recipient')
-                            ->title('Recipient')
-                        , Input::make('invoice.discount')
-                            ->title('Discount')
-                            ->type('number'),
-                        Input::make('invoice.shipping_cost')
-                            ->title('Shipping_cost')
-                        , Input::make('invoice.pay_deadline')
-                            ->title('Pay_deadline')
-                            ->type('date')
-                    ])
-                ],
-                "Payment" => [
-                    Layout::rows([
-                        RadioButtons::make('invoice.status')
-                            ->title('Status')
-                            ->options([
-                                "in_progress" => "in_progress",
-                                "delivered" => "delivered",
-                                "canceled" => "canceled",
-                                "confirmation" => "confirmation",
-                            ]),
-                    ])
-                ]
-            ]),
+
             Layout::rows([Select::make('product.id')
                 ->fromQuery(Product::query(), 'display_name')
                 ->searchColumns('product_name',)
@@ -135,6 +99,9 @@ class InvoiceCreateScreen extends Screen
             Layout::table('cart', [
                 TD::make('product_name')->sort(),
                 TD::make('selling_price'),
+                TD::make('quantity')->render(function ($cart) {
+                    return Auth::user()->cart->products()->where('product_id', $cart->id)->first()->pivot->quantity;
+                }),
                 TD::make(__('Actions'))
                     ->align(TD::ALIGN_CENTER)
                     ->width('100px')
@@ -151,11 +118,42 @@ class InvoiceCreateScreen extends Screen
                                 ->method('incrementProduct', ['product' => $product->id])
                         ])),
             ]),
-            Layout::rows([
-                Button::make('Click for send to incoices ' . " " . "Total Price " . $this->total_cost)
-                    ->type(Color::INFO())
-                    ->method('createInvoice')
-            ])
+            Layout::view('total_cost'),
+                Layout::rows([
+                    ModalToggle::make('Click for send to incoices')
+                        ->type(Color::INFO())
+                        ->modal('createInvoice')
+                    ->method('createInvoice'),
+                ]),
+            Layout::modal('createInvoice',
+                Layout::rows([
+                    Input::make('invoice.seller_name')
+                        ->title('Seller Name')
+                    ->required()
+                    ->value(Auth::user()->name)
+                    , Input::make('invoice.customer_name')
+                        ->title('Costumer Name')
+                    , Input::make('invoice.driver_name')
+                        ->title('Driver Name'),
+                    Input::make('invoice.description')
+                        ->title('Description'),
+                    Input::make('invoice.address')
+                        ->title('Address')
+                    , Input::make('invoice.recipient')
+                        ->title('Recipient')
+                    , Input::make('invoice.discount')
+                        ->title('Discount')
+                        ->type('number'),
+                    Input::make('invoice.shipping_cost')
+                        ->title('Shipping_cost')
+                    , Input::make('invoice.pay_deadline')
+                        ->title('Pay_deadline')
+                        ->type('date')
+                ])
+
+            )
+                ->title('Create Product')
+                ->applyButton('add invoice')
         ];
     }
 
@@ -209,11 +207,11 @@ class InvoiceCreateScreen extends Screen
             return redirect()->route('invoice.create');
         }
         $request->validate([
-           "invoice.seller_name"=>['required'],
-           "invoice.customer_name"=>['required'],
-           "invoice.driver_name"=>['required'],
-           "invoice.address"=>['required'],
-           "invoice.recipient"=>['required'],
+            "invoice.seller_name" => ['required'],
+            "invoice.customer_name" => ['required'],
+            "invoice.driver_name" => ['required'],
+            "invoice.address" => ['required'],
+            "invoice.recipient" => ['required'],
         ]);
         $invoice = new Invoice();
         $invoice->user_id = $cart->user_id;

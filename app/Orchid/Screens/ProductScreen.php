@@ -98,18 +98,13 @@ class ProductScreen extends Screen
                     ->placeholder('Enter product name')
                     ->help('The name of the product to be created.'),
                 Input::make('product.barcode')
-                    ->required()
-                    ->title('barcode'),
-                Input::make('product.expire_date')
-                    ->type('date')
-                    ->title('EX date'),
-                Input::make('product.produce_date')
-                    ->type('date')
-                    ->title('P date'),
-                Input::make('product.max_in_card')
-                    ->title('Max In Card')
                     ->type('number')
                     ->required()
+                    ->title('barcode'),
+                Input::make('product.max_in_card')
+                    ->type('number')
+                    ->required()
+                    ->hidden()
                     ->value(100),
                 Input::make('product.purchase_price')
                     ->title('purchase_price')
@@ -124,22 +119,9 @@ class ProductScreen extends Screen
                     ->type('number')
                     ->required(),
                 Input::make('product.quantity_in_box')
-                    ->title('quantity_in_box_price')
+                    ->title('quantity_in_box')
                     ->type('number')
                     ->required(),
-                CheckBox::make('product.is_active')
-                    ->title('is_active')
-                    ->value(1),
-                Select::make('product.package_type')
-                    ->title('package type')
-                    ->options([
-                        "sack" => "sack",
-                        "package" => "package",
-                        "carton" => "carton",
-                        "box" => "box"
-                    ])
-                    ->empty('carton')
-                    ->value('carton')
             ]))
                 ->title('Create Product')
                 ->applyButton('Add Product'),
@@ -151,8 +133,6 @@ class ProductScreen extends Screen
         $request->validate([
             "product.product_name" => ["required", "max:30", "unique:products,product_name"],
             "product.barcode" => ["required", "max:50", "unique:products,barcode"],
-            "product.expire_date" => ["nullable"],
-            "product.produce_date" => ["nullable"],
             "product.max_in_card" => ["required"],
             "product.purchase_price" => ["required"],
             "product.selling_price" => ["required",
@@ -162,7 +142,6 @@ class ProductScreen extends Screen
                     }
                 },
             ],
-            "product.customer_price" => ["required", "nullable"],
             "product.quantity_in_box" => ["required", "max:200"],
         ]);
 
@@ -176,7 +155,6 @@ class ProductScreen extends Screen
             "selling_price" => $request->input('product.selling_price'),
             "customer_price" => $request->input('product.customer_price'),
             "quantity_in_box" => $request->input('product.quantity_in_box'),
-            "package_type" => $request->input('product.package_type')
         ]);
         Alert::message('new product created');
         return redirect()->route('products.list');

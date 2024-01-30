@@ -35,20 +35,20 @@ class PlatformProvider extends OrchidServiceProvider
     public function menu(): array
     {
         return [
+            Menu::make('Invoices')
+                ->icon('code')
+                ->list([
+                    Menu::make('Invoices list')
+                        ->icon('bs.bag')->sort(2)
+                    ->route('invoice.list'),
+                    Menu::make('Add invoice')
+                        ->icon('bs.plus')->sort(0)
+                    ->route('invoice.create'),
+                ]),
             Menu::make('products')
                 ->icon('bs.book')
-                ->title('Navigation')
                 ->route('products.list')
             ,
-
-            Menu::make('invoices')
-                ->icon('texts')
-                ->route('invoice.list')
-                ,
-            Menu::make('add invoice')
-                ->icon('text')
-                ->route('invoice.create')
-                ,
 
             Menu::make(__('Users'))
                 ->icon('bs.people')
@@ -62,17 +62,7 @@ class PlatformProvider extends OrchidServiceProvider
                 ->permission('platform.systems.roles')
                 ->divider(),
 
-            Menu::make('Documentation')
-                ->title('Docs')
-                ->icon('bs.box-arrow-up-right')
-                ->url('https://orchid.software/en/docs')
-                ->target('_blank'),
 
-            Menu::make('Changelog')
-                ->icon('files')
-                ->url('https://github.com/orchidsoftware/platform/blob/master/CHANGELOG.md')
-                ->target('_blank')
-                ->badge(fn () => Dashboard::version(), Color::DARK),
         ];
     }
 
