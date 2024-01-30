@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class=" mb-2 bg-info text-center border border-warning rounded">
-    <h3 class="mt-2"> total cost    {{$total_cost}}</h3>
+    <h3 class="mt-2"> total cost {{$total_cost}}</h3>
 </div>
 </body>
 </html>
